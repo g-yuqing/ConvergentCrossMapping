@@ -1,5 +1,7 @@
 import numpy as np
 from scipy.stats.stats import pearsonr
+from loaddata import output_data
+import matplotlib.pyplot as plt
 
 
 class Ccm:
@@ -66,8 +68,46 @@ class Ccm:
             self.estimate_results.append(pred_y)
 
     def compute_correlation(self):
-        true_y = self.target_data[self.start_point - 1, self.end_point]
+        true_y = self.target_data[self.start_point - 1: self.end_point]
         pred_y = self.estimate_results
         # pearsonr
         _, p_value = pearsonr(np.array(true_y), np.array(pred_y))
         self.correlation = p_value
+
+
+def main(start_size, end_size, interval):
+    correlations = []
+    # read data
+    data = output_data()
+    kyoto_nov = data[1][0]
+    osaka_nov = data[1][1]
+    kyoto_nov_temp = []
+    osaka_nov_temp = []
+    for i in kyoto_nov:
+        kyoto_nov_temp.append(float(i[5]))
+    for i in osaka_nov:
+        osaka_nov_temp.append(float(i[5]))
+
+    for i in xrange(start_size, end_size, interval):
+        temp_kyoto = kyoto_nov_temp[:i]
+        temp_osaka = osaka_nov_temp[:i]
+        temp_len = len(temp_kyoto)
+        temp_ccm = Ccm(temp_kyoto, temp_osaka, dimension_E=2,
+                       points_num_L=temp_len, delta_T=1)
+        temp_ccm.create_manifold()
+        temp_ccm.find_nearest_neighbor()
+        temp_ccm.create_weights()
+        temp_ccm.estimate_y()
+        temp_ccm.compute_correlation()
+        correlations.append(temp_ccm.correlation)
+    xs = range(start_size, end_size, interval)
+    f, ax = plt.subplots()
+    ax.set_title('Kyoto_Osaka')
+    ax.set_xlabel('Library Size')
+    ax.set_ylabel('Coefficient')
+    line, = ax.plot(xs, correlations, 'r', lw=1, label='Kyoto->Osaka')
+    plt.show()
+
+
+if __name__ == '__main__':
+    main(50, 56, 1)
