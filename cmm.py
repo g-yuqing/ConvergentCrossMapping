@@ -49,7 +49,14 @@ class Ccm:
             # calculate indices
             temp_index = sorted(range(len(distances)),
                                 key=lambda k: distances[k])
-            temp_index = temp_index[1:self.dimension_E + 2]  # E+1 are be used
+            for i in range(len(temp_index)):
+                if 0.0 == float(distances[temp_index[i]]):
+                    continue
+                # temp_index = temp_index[1:self.dimension_E + 2]  # E+1 are be
+                # used
+                else:
+                    temp_index = temp_index[i:self.dimension_E + 1 + i]
+                    break
             self.indices.append(temp_index)
             # calculate weights
             temp_distances = [distances[d] for d in temp_index]  # E+1 nearest
@@ -81,19 +88,26 @@ def main(start_size, end_size, interval):
     data = output_data()
     kyoto_nov = data[1][0]
     osaka_nov = data[1][1]
+    # tokyo_nov = data[0][0]
     kyoto_nov_temp = []
     osaka_nov_temp = []
+    # tokyo_nov_temp = []
     for i in kyoto_nov:
         kyoto_nov_temp.append(float(i[5]))
     for i in osaka_nov:
         osaka_nov_temp.append(float(i[5]))
+    # for i in tokyo_nov:
+    #     tokyo_nov_temp.append(float(i[5]))
 
     for i in xrange(start_size, end_size, interval):
         temp_kyoto = kyoto_nov_temp[:i]
         temp_osaka = osaka_nov_temp[:i]
+        # temp_tokyo = tokyo_nov_temp[:i]
         temp_len = len(temp_kyoto)
         temp_ccm = Ccm(temp_kyoto, temp_osaka, dimension_E=2,
                        points_num_L=temp_len, delta_T=1)
+        # temp_ccm = Ccm(temp_kyoto, temp_tokyo, dimension_E=2,
+        #                points_num_L=temp_len, delta_T=1)
         temp_ccm.create_manifold()
         temp_ccm.find_nearest_neighbor()
         temp_ccm.create_weights()
@@ -110,4 +124,4 @@ def main(start_size, end_size, interval):
 
 
 if __name__ == '__main__':
-    main(50, 56, 1)
+    main(60, 80, 1)
