@@ -52,11 +52,11 @@ class Ccm:
             for i in range(len(temp_index)):
                 if 0.0 == float(distances[temp_index[i]]):
                     continue
-                # temp_index = temp_index[1:self.dimension_E + 2]  # E+1 are be
-                # used
                 else:
                     temp_index = temp_index[i:self.dimension_E + 1 + i]
                     break
+                # temp_index = temp_index[1:self.dimension_E + 2]  # E+1 are be
+                # 'used
             self.indices.append(temp_index)
             # calculate weights
             temp_distances = [distances[d] for d in temp_index]  # E+1 nearest
@@ -65,6 +65,33 @@ class Ccm:
             N = sum(uis)
             temp_weights = [ui / float(N) for ui in uis]
             self.weights.append(temp_weights)
+
+    def create_weights2(self):
+        for distances in self.points_distances:
+            # calculate indices
+            temp_index = sorted(range(len(distances)),
+                                key=lambda k: distances[k])
+            temp_index = temp_index[1: self.dimension_E + 2]
+            self.indices.append(temp_index)
+            # calculate weights
+            temp_distances = [distances[d] for d in temp_index]
+            d1 = temp_distances[0]
+            # check weights
+            if float(d1) == 0.0:
+                uis = []
+                for i in range(len(temp_index)):
+                    if float(temp_distances[i]) == 0.0:
+                        uis.append(np.exp(-1))
+                    else:
+                        uis.append(0.0)
+                N = sum(uis)
+                temp_weights = [ui / float(N) for ui in uis]
+                self.weights.append(temp_weights)
+            else:
+                uis = [np.exp(-di / d1) for di in temp_distances]
+                N = sum(uis)
+                temp_weights = [ui / float(N) for ui in uis]
+                self.weights.append(temp_weights)
 
     def estimate_y(self):
         for temp_indices, temp_weights in zip(self.indices, self.weights):
@@ -78,7 +105,7 @@ class Ccm:
         true_y = self.target_data[self.start_point - 1: self.end_point]
         pred_y = self.estimate_results
         # pearsonr
-        _, p_value = pearsonr(np.array(true_y), np.array(pred_y))
+        p_value, _ = pearsonr(np.array(true_y), np.array(pred_y))
         self.correlation = p_value
 
 
@@ -110,13 +137,13 @@ def main(start_size, end_size, interval):
         #                points_num_L=temp_len, delta_T=1)
         temp_ccm.create_manifold()
         temp_ccm.find_nearest_neighbor()
-        temp_ccm.create_weights()
+        temp_ccm.create_weights2()
         temp_ccm.estimate_y()
         temp_ccm.compute_correlation()
         correlations.append(temp_ccm.correlation)
     xs = range(start_size, end_size, interval)
     f, ax = plt.subplots()
-    ax.set_title('Kyoto_Osaka')
+    ax.set_title('Kyoto->Osaka')
     ax.set_xlabel('Library Size')
     ax.set_ylabel('Coefficient')
     line, = ax.plot(xs, correlations, 'r', lw=1, label='Kyoto->Osaka')
@@ -124,4 +151,4 @@ def main(start_size, end_size, interval):
 
 
 if __name__ == '__main__':
-    main(60, 80, 1)
+    main(40, 80, 1)
