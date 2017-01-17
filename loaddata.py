@@ -1,5 +1,4 @@
 import csv
-import numpy as np
 import matplotlib.pyplot as plt
 
 
@@ -72,47 +71,21 @@ def reshape_data(data):
 
 
 def output_data():
-    datafiles = ['data11e.csv', 'data11w.csv']
-    # data will be stored in the form as 11e|11w
-    # -> three areas in east/west -> each day's data -> 6 kinds
-    data = []
-    for filename in datafiles:
-        temp_data = loadcsv(filename)
-        region1, region2, region3 = reshape_data(temp_data)
-        data.append([region1, region2, region3])  # data shape[2,3,600+,6]
-    return data
-
-
-def correlate_test():
-    data = loadcsv()
-    kyoto, osaka, kobe = reshape_data(data)
-    rain_kyoto = []
-    temp_kyoto = []
-    for i in kyoto:
-        rain_kyoto.append(float(i[1]))
-        temp_kyoto.append(float(i[5]))
-    rain_osaka = []
-    temp_osaka = []
-    for i in osaka:
-        rain_osaka.append(float(i[1]))
-        temp_osaka.append(float(i[5]))
-    rain_kobe = []
-    temp_kobe = []
-    for i in kobe:
-        rain_kobe.append(float(i[1]))
-        temp_kobe.append(float(i[5]))
-
-    co = np.correlate(temp_kyoto, temp_kobe, 'full')
-    print(np.argmax(co))
-    # cloud,rain,pressure,wind,wd,temperature
-    plt.subplot(3, 1, 1)
-    plt.scatter(temp_kyoto[1:], temp_kyoto[:-1])
-    plt.subplot(3, 1, 2)
-    plt.scatter(temp_kobe[1:], temp_kobe[:-1])
-    plt.subplot(3, 1, 3)
-    plt.scatter(temp_osaka[1:], temp_osaka[:-1])
-    plt.show()
+    datafile = 'data11w.csv'
+    temp_data = loadcsv(datafile)
+    kyoto, osaka, kobe = reshape_data(temp_data)
+    return kyoto, osaka, kobe
 
 
 if __name__ == '__main__':
-    correlate_test()
+    kyoto, osaka, kobe = output_data()
+    kyoto_temp = []
+    for i in range(len(kyoto)):
+        kyoto_temp.append(float(kyoto[i][5]))
+    xs = []
+    ys = []
+    for(i, val) in enumerate(kyoto_temp):
+        xs.append(i)
+        ys.append(val)
+    plt.plot(xs, ys)
+    plt.show()

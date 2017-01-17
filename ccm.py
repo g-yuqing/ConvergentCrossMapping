@@ -112,9 +112,7 @@ class Ccm:
 def main(start_size, end_size, interval):
     correlations = []
     # read data
-    data = output_data()
-    kyoto_nov = data[1][0]
-    osaka_nov = data[1][1]
+    kyoto_nov, osaka_nov, kobe_nov = output_data()
     # tokyo_nov = data[0][0]
     kyoto_nov_temp = []
     osaka_nov_temp = []
@@ -123,8 +121,6 @@ def main(start_size, end_size, interval):
         kyoto_nov_temp.append(float(i[5]))
     for i in osaka_nov:
         osaka_nov_temp.append(float(i[5]))
-    # for i in tokyo_nov:
-    #     tokyo_nov_temp.append(float(i[5]))
 
     for i in xrange(start_size, end_size, interval):
         temp_kyoto = kyoto_nov_temp[:i]
@@ -151,4 +147,4 @@ def main(start_size, end_size, interval):
 
 
 if __name__ == '__main__':
-    main(40, 80, 1)
+    main(20, 280, 1)
