@@ -23,46 +23,46 @@ def reshape_data(data):
         kobe_temp = []
         for i in range(len(data_unit)):
             if i % 18 == 1:  # cloud 1,19,37
-                if (i - 1) / 18 == 0:
+                if i / 18 == 0:
                     kyoto_temp.append(data_unit[i])
-                if (i - 1) / 18 == 1:
+                if i / 18 == 1:
                     osaka_temp.append(data_unit[i])
-                if (i - 1) / 18 == 2:
+                if i / 18 == 2:
                     kobe_temp.append(data_unit[i])
             if i % 18 == 4:  # rain 4,22,40
-                if (i - 1) / 18 == 0:
+                if i / 18 == 0:
                     kyoto_temp.append(data_unit[i])
-                if (i - 1) / 18 == 1:
+                if i / 18 == 1:
                     osaka_temp.append(data_unit[i])
-                if (i - 1) / 18 == 2:
+                if i / 18 == 2:
                     kobe_temp.append(data_unit[i])
             if i % 18 == 8:  # air pressure 8,26,44
-                if (i - 1) / 18 == 0:
+                if i / 18 == 0:
                     kyoto_temp.append(data_unit[i])
-                if (i - 1) / 18 == 1:
+                if i / 18 == 1:
                     osaka_temp.append(data_unit[i])
-                if (i - 1) / 18 == 2:
+                if i / 18 == 2:
                     kobe_temp.append(data_unit[i])
             if i % 18 == 11:  # wind 11,29,47
-                if (i - 1) / 18 == 0:
+                if i / 18 == 0:
                     kyoto_temp.append(data_unit[i])
-                if (i - 1) / 18 == 1:
+                if i / 18 == 1:
                     osaka_temp.append(data_unit[i])
-                if (i - 1) / 18 == 2:
+                if i / 18 == 2:
                     kobe_temp.append(data_unit[i])
             if i % 18 == 13:  # wind direction 13,31,49
-                if (i - 1) / 18 == 0:
+                if i / 18 == 0:
                     kyoto_temp.append(data_unit[i])
-                if (i - 1) / 18 == 1:
+                if i / 18 == 1:
                     osaka_temp.append(data_unit[i])
-                if (i - 1) / 18 == 2:
+                if i / 18 == 2:
                     kobe_temp.append(data_unit[i])
             if i % 18 == 16:  # temperature 16,34,52
-                if (i - 1) / 18 == 0:
+                if i / 18 == 0:
                     kyoto_temp.append(data_unit[i])
-                if (i - 1) / 18 == 1:
+                if i / 18 == 1:
                     osaka_temp.append(data_unit[i])
-                if (i - 1) / 18 == 2:
+                if i / 18 == 2:
                     kobe_temp.append(data_unit[i])
         kyoto.append(kyoto_temp)
         osaka.append(osaka_temp)
