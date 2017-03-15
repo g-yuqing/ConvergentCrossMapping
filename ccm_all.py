@@ -108,8 +108,8 @@ class Ccm:
         true_y = self.target_data[self.start_point - 1: self.end_point]
         pred_y = self.estimate_results
         # pearsonr
-        p_value, _ = pearsonr(np.array(true_y), np.array(pred_y))
-        self.correlation = p_value
+        p, _ = pearsonr(np.array(true_y), np.array(pred_y))
+        self.correlation = p**2
 
 
 def main_all_points(start_size, end_size, interval):
@@ -150,4 +150,4 @@ def main_all_points(start_size, end_size, interval):
 
 
 if __name__ == '__main__':
-    main_all_points(60, 100, 1)
+    main_all_points(30, 100, 1)

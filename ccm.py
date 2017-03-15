@@ -115,9 +115,9 @@ class Ccm:
             self.create_weights()
             self.estimate_y()
             # pearsonr
-            p_value, _ = pearsonr(array_true_y,
-                                  np.array(self.estimate_results))
-            self.correlations.append(p_value)
+            p, _ = pearsonr(array_true_y,
+                            np.array(self.estimate_results))
+            self.correlations.append(p**2)
             self.empty_data()
 
 
